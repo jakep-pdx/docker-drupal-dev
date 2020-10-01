@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+    php:
+        build:
+            context: .
+            dockerfile: ./ubuntu-php-apache/Dockerfile
+        ports:
+            - 443:443
+        volumes:
+            - "./PROJECT:/var/www"
+        tty: true
+    mysql:
+        image: mysql:5.7
+        command: [--max_allowed_packet=512M]
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: PROJECT
+            MYSQL_USER: drupal
+            MYSQL_PASSWORD: drupal
+        volumes:
+            - ./init:/docker-entrypoint-initdb.d
+        tty: true
